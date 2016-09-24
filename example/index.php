@@ -20,7 +20,6 @@ class SDK
             "cache-control: no-cache",
             "content-type: application/json",
             "devless-token: ".$token,
-            "devless_user_token: ".$this->payload['user_token']
           ];
 
           return $this;
@@ -171,8 +170,19 @@ class SDK
      */
     public function setUserToken($token)
     {
-    	$this->payload['user_token'] = $token;
+    	array_push($this->headers, 'devless_user_token:'.$token);
     	return $this;
+    }
+
+    public function call($service, $method, $params)
+    {
+    	$id = rand(1,10000000);
+    	$params = json_encode($params);
+    	$params = '{ "jsonrpc": "2.0","method":"'.$service.'","id": '.$id.',"params": '.$params.'}';
+    	
+    	$subUrl = "/api/v1/service/".$service."/rpc?action=".$method;
+
+    	return $this->requestProcessor($params, $subUrl, 'POST');
     }
 
     /**
@@ -232,8 +242,13 @@ class SDK
 
 
 $devless = new SDK("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0");
-//var_dump($devless->addData('event', 'event-table', ['name'=>'kala', 'country'=>'uganda']));
+$output = ($devless->call('dvauth','login',['email'=>'k@gmail.com','password'=>'password']));
+$devless->setUserToken($output['payload']['result']);
+//var_dump($devless->addData('event', 'event-table', ['name'=>'meme', 'country'=>'US']));
 //var_dump($devless->where('id',5)->updateData('event', 'event-table',['country'=>'kenya']));
 //var_dump($devless->where('id',5)->deleteData('event','event-table'));
-var_dump($devless->getData('event','event-table'));
+//var_dump($devless->getData('event','event-table'));
 
+$results = $devless->getData('event','event-table');
+
+var_dump($results);
