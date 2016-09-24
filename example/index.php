@@ -13,12 +13,14 @@ class SDK
 
     public function __construct($instanceUrl, $token)
     {
+    	$this->payload['user_token'] = '';
         $this->connection['instanceUrl'] = $instanceUrl;
         $this->connection['token'] = $token; 
         $this->headers = [
             "cache-control: no-cache",
             "content-type: application/json",
             "devless-token: ".$token,
+            "devless_user_token: ".$this->payload['user_token']
           ];
 
           return $this;
@@ -96,7 +98,12 @@ class SDK
     }
 
 
-
+    /**
+     * delete data from service table
+     * @param $service
+     * @param $table
+     * @return array
+     */
     public function deleteData($service, $table)
     {
     	$params = self::$payload['params']['where'][0]; 
@@ -157,8 +164,23 @@ class SDK
         return $this;
     }
 
+    /**
+     * set user token for authentication
+     * @param $token
+     * @return instance obj
+     */
+    public function setUserToken($token)
+    {
+    	$this->payload['user_token'] = $token;
+    	return $this;
+    }
 
-
+    /**
+     * set query parameter values 
+     * @param $methodName
+     * @param $args
+     * @return instance obj
+     */
     private static function bindToParams($methodName, $args)
     {
     	
