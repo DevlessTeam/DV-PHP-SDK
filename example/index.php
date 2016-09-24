@@ -82,6 +82,7 @@ class SDK
     }
 
 
+
     public function updateData($service, $table, $data)
     {
     	$params = self::$payload['params']['where'][0];
@@ -94,11 +95,13 @@ class SDK
     	return $this->requestProcessor($data, $subUrl, 'PATCH');         
     }
 
+
+
     public function deleteData($service, $table)
     {
     	$params = self::$payload['params']['where'][0]; 
 
-    	$data 	= '{  "resource":[  {  "name":"'.$table.'","params":[  {  "where":"'.$params.'","data":['.$data.']}]}]}';
+    	$data 	= '{  "resource":[  {  "name":"'.$table.'","params":[  {  "where":"'.$params.'","delete":true}]}]}';
     	
     	$subUrl = '/api/v1/service/'.$service.'/db';
     	return $this->requestProcessor($data, $subUrl, 'DELETE');
@@ -208,6 +211,7 @@ class SDK
 
 $devless = new SDK("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0");
 //var_dump($devless->addData('event', 'event-table', ['name'=>'kala', 'country'=>'uganda']));
-var_dump($devless->where('id',5)->updateData('event', 'event-table',['country'=>'kenya']));
+//var_dump($devless->where('id',5)->updateData('event', 'event-table',['country'=>'kenya']));
+//var_dump($devless->where('id',5)->deleteData('event','event-table'));
 var_dump($devless->getData('event','event-table'));
 
