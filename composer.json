@@ -31,10 +31,5 @@
         "psr-4": {
             "Devless\\sdk\\Test\\": "tests"
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "master": "1.0"
-        }
     }
 }
