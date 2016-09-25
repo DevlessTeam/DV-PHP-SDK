@@ -1,5 +1,7 @@
 <?php
+namespace Devless\sdk;
 
+require './src/SDK.php';
 
 $devless = new SDK("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0");
 $output = ($devless->call('dvauth','login',['email'=>'k@gmail.com','password'=>'password']));
