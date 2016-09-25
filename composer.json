@@ -1,6 +1,7 @@
 {
     "name": "devless/php-sdk",
     "description": "Official Devless SDK",
+    "version": "1.0.0",
     "keywords": [
         "Devless",
         "php",
