@@ -4,24 +4,24 @@ namespace Devless\sdk;
 require './src/SDK.php';
 
 //instantiation (get token from devless insatance )
-$devless = new SDK("http://localhost:8000", "955c8a0dc37b4a22b5950a9e0e9491d0");
+$devless = new SDK("http://45.33.95.89:7080", "f9f88701336a8bfe4d9466619654754b");
 
 //authenticating a user
 $output = ($devless->call('dvauth','login',['email'=>'k@gmail.com','password'=>'password']));
+var_dump($output);
+// //set user token from authentication 
+ $devless->setUserToken($output['payload']['result']);
 
-//set user token from authentication 
-$devless->setUserToken($output['payload']['result']);
+// //add data to table 
+// var_dump($devless->addData('event', 'event-table', ['name'=>'meme', 'country'=>'US']));
 
-//add data to table 
-var_dump($devless->addData('event', 'event-table', ['name'=>'meme', 'country'=>'US']));
+// //update record ewithin table 
+// var_dump($devless->where('id',5)->updateData('event', 'event-table',['country'=>'kenya']));
 
-//update record ewithin table 
-var_dump($devless->where('id',5)->updateData('event', 'event-table',['country'=>'kenya']));
-
-//delete record from table 
-var_dump($devless->where('id',5)->deleteData('event','event-table'));
+// //delete record from table 
+// var_dump($devless->where('id',5)->deleteData('event','event-table'));
 
 //get record from table 
-$results = $devless->getData('event','event-table');
+$results = $devless->getData('event','event_signup_professional');
 
 var_dump($results);
