@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Devless\\sdk\\": "src"
+            "Devless\\SDK\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Devless\\sdk\\Test\\": "tests"
+            "Devless\\SDK\\Test\\": "tests"
         }
     }
 }
