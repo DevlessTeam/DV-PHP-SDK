@@ -32,4 +32,8 @@ nb-configuration.xml
 build
 composer.lock
 docs
+<<<<<<< HEAD
 vendor
+=======
+vendor
+>>>>>>> 8dcd5e894dcbf402a879c8269cb2fd42d491a28c

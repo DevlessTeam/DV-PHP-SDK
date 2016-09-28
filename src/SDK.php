@@ -170,7 +170,7 @@ class SDK
      */
     public function setUserToken($token)
     {
-        array_push($this->headers, 'devless-user-token:'.$token);
+        array_push($this->headers, 'devless_user_token:'.$token);
         return $this;
     }
 
