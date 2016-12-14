@@ -14,7 +14,7 @@ Official Devless php sdk
 ### To connect to the Devless instance 
 
 ```
-use Devless\sdk\SDK;
+use Devless\SDK\SDK;
 
 $devless = new SDK("http://example.com", "1234567abcdefghijklmnopqrst");
 
