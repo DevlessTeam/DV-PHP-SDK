@@ -46,9 +46,14 @@ var_dump($results);
 
 `` eg: $results = $devless->offset(2)->size(6)->getData('service_name', 'service_table'); ```
 
-`` where `` : Get data based where a key matches a certain value 
+`` where `` : Get data based on where a key matches a certain value 
 
 ``` eg: $results = $devless->where('name', 'edmond')->getData('service_name', 'service_table'); ```
+
+`` orWhere `` : Get a combination of results using a particular identifier from the table 
+
+``` eg: $results = $devless->orWhere('name', 'edmond')->getData('service_name', 'service_table'); ```
+
 
 ``orderBy`` : Order incoming results in descending order based on a key 
 
