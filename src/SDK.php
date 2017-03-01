@@ -86,6 +86,17 @@ class SDK
         return $this;
     }
     /**
+    * Carryout db action orwhere $column equals $value
+    * @param $column
+    * @param $value
+    * @return $this
+    */
+    public function orWhere($column, $value)
+    {
+        self:bindToParams('orWhere', $column.','.$value);
+        return $this;
+    }
+    /**
      * Skip $value number of results
      * @param $value
      * @return $this
