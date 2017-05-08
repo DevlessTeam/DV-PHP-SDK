@@ -1,5 +1,4 @@
 <?php
-
 class SDK
 {
     private $connection    = [];
@@ -28,7 +27,6 @@ class SDK
     {
         $data = json_encode($data, true);
         $data = '{"resource": [ {"name": "'.$table.'","field": ['.$data.'] } ]}';
-
         $subUrl =  '/api/v1/service/'.$service.'/db';
         return $this->requestProcessor($data, $subUrl, 'POST');
     }
@@ -42,13 +40,9 @@ class SDK
     {
         $data = [];
         $params = (isset(self::$payload['params']))?self::$payload['params']:'';
-
-
-
         $query  = ($params != null)? $this->queryMaker($params) :'';
-
         $subUrl = '/api/v1/service/'.$service.'/db?table='.$table.$query;
-
+        self::$payload['params'] = [];  
         return $this->requestProcessor($data, $subUrl, 'GET');
     }
     public function updateData($service, $table, $data)
@@ -56,7 +50,6 @@ class SDK
         $params = self::$payload['params']['where'][0];
         $data   = json_encode($data, true);
         $data   = '{  "resource":[  {  "name":"'.$table.'","params":[  {  "where":"'.$params.'","data":['.$data.']}]}]}';
-
         $subUrl = '/api/v1/service/'.$service.'/db';
         return $this->requestProcessor($data, $subUrl, 'PATCH');
     }
@@ -70,7 +63,6 @@ class SDK
     {
         $params = self::$payload['params']['where'][0];
         $data   = '{  "resource":[  {  "name":"'.$table.'","params":[  {  "where":"'.$params.'","delete":true}]}]}';
-
         $subUrl = '/api/v1/service/'.$service.'/db';
         return $this->requestProcessor($data, $subUrl, 'DELETE');
     }
@@ -126,7 +118,6 @@ class SDK
         self::bindToParams('orderBy', $value);
         return $this;
     }
-
     /**
      * Get related records
      * @param $value
@@ -135,6 +126,12 @@ class SDK
     public function related($value)
     {
         self:self::bindToParams('related', $value);
+        return $this;
+    }
+
+    public function randomize()
+    {
+        self:self::bindToParams('randomize', 0);
         return $this;
     }
     /**
@@ -152,7 +149,6 @@ class SDK
         $id = rand(1,10000000);
         $params = json_encode($params);
         $params = '{ "jsonrpc": "2.0","method":"'.$service.'","id": '.$id.',"params": '.$params.'}';
-
         $subUrl = "/api/v1/service/".$service."/rpc?action=".$method;
         return $this->requestProcessor($params, $subUrl, 'POST');
     }
@@ -164,18 +160,13 @@ class SDK
      */
     private static function bindToParams($methodName, $args)
     {
-
         if ($methodName == 'where') {
             (isset(self::$payload['params'][$methodName]))?  true : self::$payload['params'][$methodName] = [];
-
             array_push(self::$payload['params'][$methodName], $args);
         } else {
             (isset(self::$payload['params'][$methodName]))?  true : self::$payload['params'][$methodName] = '';
-
             self::$payload['params'][$methodName] = $args;
         }
-
-
     }
     private function requestProcessor($data, $subUrl, $method)
     {
@@ -200,24 +191,20 @@ class SDK
             return  json_decode($response, true);
         }
     }
-
     private function queryMaker($params, $recKey=null) {
         $queryParams = '';
         foreach($params as $key => $value) {
             $key = ($recKey !== null)? $recKey : $key;
             if(is_array($value)) {
-
                 //replace integer indecies with query key
                 $recKey = $key;
                 $queryParams .= $this->queryMaker($value, $recKey);
-
             } else {
                 $queryParams = "&".$key."=".$value.$queryParams;
             }
-
         }
-        return $queryParams;
+        $returnQueryParams = $queryParams;     
+        $queryParams = null;
+        return $returnQueryParams;
     }
 }
-
-
