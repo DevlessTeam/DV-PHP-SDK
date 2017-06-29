@@ -102,36 +102,72 @@ class SDK
         return $this;
     }
 
+    /**
+     * get records with $field greater than $number
+     * @param $field
+     * @param $number
+     * @return $this
+     */
     public function greaterThan($field, $number)
     {
         self::bindToParams('greaterThan', $field.','.$number);
         return $this;
     }
 
+    /**
+     * get records with $field less than $number
+     * @param $field
+     * @param $number
+     * @return $this
+     */
     public function lessThan($field, $number)
     {
         self::bindToParams('lessThan',  $field.','.$number);
         return $this;
     }
 
+    /**
+     * get records with $field less than or equal to $number
+     * @param $field
+     * @param $number
+     * @return $this
+     */
     public function lessThanEqual($field, $number)
     {
         self::bindToParams('lessThanEqual',  $field.','.$number);
         return $this;
     }
 
+    /**
+     * get records with $field greater than or equal to $number
+     * @param $field
+     * @param $number
+     * @return $this
+     */
     public function greaterThanEqual($field, $number)
     {
         self::bindToParams('greaterThanEqual',  $field.','.$number);
         return $this;
     }
 
-    public function search($field, $query)
+    /**
+     * search for records with $field similar to $query
+     * @param $field
+     * @param $word
+     * @return $this
+     */
+    public function search($field, $word)
     {
-        self::bindToParams('search', $field.','.$query);
+        self::bindToParams('search', $field.','.$word);
         return $this;
     }
 
+    /**
+     * allows for passing query params without using methods eg : ->size(3) can be ->queryParam('size', [1])
+     * @param $name
+     * @param array $params
+     * @return $this
+     */
     public function queryParam($name, $params=[])
     {
         self::bindToParams($name, implode(",", $params));
@@ -193,6 +229,10 @@ class SDK
         array_push($this->headers, 'devless-user-token:'.$token);
         return $this;
     }
+
+    /**
+     * make rpc call
+     */
     public function call($service, $method, $params)
     {
         $id = rand(1,10000000);
