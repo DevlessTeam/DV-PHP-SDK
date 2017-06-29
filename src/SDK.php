@@ -85,7 +85,56 @@ class SDK
     */
     public function orWhere($column, $value)
     {
-        self:bindToParams('orWhere', $column.','.$value);
+        self::bindToParams('orWhere', $column.','.$value);
+        return $this;
+    }
+
+    /**
+    * Carryout db action where the $field is between $range1 and $range2
+    * @param $field
+    * @param $range1
+    * @param $range2
+    * @return $this
+    */
+    public function between($field, $range1, $range2)
+    {
+        self::bindToParams('between', $field.','.$range1.','.$range2);
+        return $this;
+    }
+
+    public function greaterThan($field, $number)
+    {
+        self::bindToParams('greaterThan', $field.','.$number);
+        return $this;
+    }
+
+    public function lessThan($field, $number)
+    {
+        self::bindToParams('lessThan',  $field.','.$number);
+        return $this;
+    }
+
+    public function lessThanEqual($field, $number)
+    {
+        self::bindToParams('lessThanEqual',  $field.','.$number);
+        return $this;
+    }
+
+    public function greaterThanEqual($field, $number)
+    {
+        self::bindToParams('greaterThanEqual',  $field.','.$number);
+        return $this;
+    }
+
+    public function search($field, $query)
+    {
+        self::bindToParams('search', $field.','.$query);
+        return $this;
+    }
+
+    public function queryParam($name, $params=[])
+    {
+        self::bindToParams($name, implode(",", $params));
         return $this;
     }
     /**
@@ -160,7 +209,7 @@ class SDK
      */
     private static function bindToParams($methodName, $args)
     {
-        if ($methodName == 'where') {
+        if ($methodName == 'where' || $methodName == 'orWhere' ) {
             (isset(self::$payload['params'][$methodName]))?  true : self::$payload['params'][$methodName] = [];
             array_push(self::$payload['params'][$methodName], $args);
         } else {
@@ -170,6 +219,7 @@ class SDK
     }
     private function requestProcessor($data, $subUrl, $method)
     {
+        
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $this->connection['instanceUrl'].$subUrl,
@@ -188,23 +238,26 @@ class SDK
         if ($err) {
             return  $err;
         } else {
-            return  json_decode($response, true);
+            return json_decode($response, true);
         }
     }
     private function queryMaker($params, $recKey=null) {
         $queryParams = '';
+
         foreach($params as $key => $value) {
             $key = ($recKey !== null)? $recKey : $key;
             if(is_array($value)) {
                 //replace integer indecies with query key
                 $recKey = $key;
                 $queryParams .= $this->queryMaker($value, $recKey);
+                $recKey = null;
+
             } else {
                 $queryParams = "&".$key."=".$value.$queryParams;
+
             }
         }
-        $returnQueryParams = $queryParams;     
-        $queryParams = null;
-        return $returnQueryParams;
+        
+        return $queryParams;
     }
 }
