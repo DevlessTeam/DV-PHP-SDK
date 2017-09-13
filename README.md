@@ -84,7 +84,7 @@ $devless->call('service_name','method_name',[params]);
 ## Authenticating with a Devless instance
 
 ```
-$token = $devless->call('devless','login',['email'=>'k@gmail.com','password'=>'password']);
+$token = $devless->call('devless','login',['email'=>'k@gmail.com','password'=>'password'])['token'];
 
 $devless->setUserToken($token['payload']['result']);
 
